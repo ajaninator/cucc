@@ -1,0 +1,128 @@
+CISCO
+________________
+default gateway = routeren megadot ip
+vlan = egy külömb részbe tartozik akkor is ha nincs közvetlen kapcsolat (Access port = egy vlan hoz tartozik / trunk port = több vlan hozz is tartozhat)
+_______________
+----------
+(config másolás)
+en
+copy running-config startup-config
+
+vagy 
+
+end 
+write memory
+----------
+(napi üzenet)
+en
+conf t
+banner motd xyz
+end write memory
+----------
+(prioritás)
+ip address x y
+vrrp 1 ip x
+vrrp 1 priority 110 (bit kód) [router táblánál látható]
+vrrp 1 preempt (áljon vissza használat után)
+end 
+write memory
+----------
+(ip address megadása)
+en
+conf t
+interface f0/1 (<- alapjáraton) 
+ip add 192.168.0.1 255.255.255.0
+no sh (megnyitja a kábelt)
+end
+write memory
+-------------
+(vlan)
+en
+conf t
+vlan (szam)
+
+int range (portneve - port neve)
+sw m a
+sw a vlan (szam)
+vagy 
+sw m t
+no sh
+
+sw t allowed vlan (szam,szam,szam...) (melyik vlant engedi át)
+vlan (szam)
+name (cucc)
+end
+write memory
+-------------
+(al-interface)
+en
+conf t
+int g0/1 
+no sh
+int g0/1.(vlan száma)
+encapsulation dot1Q (vlan száma) <-- hogy meg tudj adni ip addresst utána
+end 
+write memory
+--------------------
+(router rip)
+en 
+conf t
+router rip
+version (szam)
+no auto-summary
+network (ip cim)
+end
+write memory
+------------------------
+(ospf)
+en
+conf t
+router ospf 1
+router-id 1.1.1.1 (változó ahány van a 2. 2.2.2.2)
+Network 192.168.100.0 0.0.0.255 area 0 (area 0 elötti cucc maszk végződéstől függ) (+mindig 0-ra végződjön az ip)
+Network 192.168.50.0 0.0.0.3 area 0 (.252 -> 0.0.0.3, .0 -> 0.0.0.255, .248 -> 0.0.0.7) (a wildcard mask ami 255 minusz subnet mask vége)
+access-list 1 deny host (ip cím)
+---and/or---
+access-list 1 pemit host (ip cím)
+???
+access-list 101 permit tcp (ip cím) (subnet mask)
+end
+write memory
+--------------------------
+(több kábel egybe switchnél)
+
+en
+conf t
+int range fa0/21-24
+channel-group 1 mode active
+int port-channel 1 
+sw m trunk
+end
+write memory
+-----------------------------
+(tunneling)
+int tunnel 10
+ip address "ip" "maszk" (nem használt random)
+tunnel source (honnan pl se0/1/0)
+tunnel destination (hova pl 192.168.1.1)
+end
+write memory
+-----------------------------------
+(dhcp routeren)
+en
+conf t
+ip dhcp excluded-address (ip cím eleje pl 192.168.0.1) (ip cím vége pl 192.168.0.15 mettől meddig de nem kötelező)
+ip dhcp pool (név)
+Network (alap ip ami .0 ra végződik) (mask) 
+default-router (router csatlakozási ip)
+dns-server szam.szam.szam.szam
+end
+write memory
+---------------------------------------
+(ACL)
+en
+conf t
+access-list 100 deny tcp (alap ip cím ami .0) 0.0.0.255 host (szerver ip) eq 80 <-- hozzáféréseket tílt
+access-list 100 permit ip any any
+(ahól akarod hogy legyen ez pl: interface g0/0)
+ip access-group 100 in 

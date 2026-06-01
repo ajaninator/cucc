@@ -1,0 +1,22 @@
+UBUNTU
+------------
+f4 = edit
+/etc/ssh/sshd_config.d (jelszó?)
+cmd: ssh (név)@(ipcím)
+------------
+
+password: ubuntu
+
+sudo apt update
+sudo apt install mc
+y
+sudo mc
+
+sudo apt install proftpd
+
+--new user--
+sudo adduser (név)
+sudo adduser (név) sudo
+
+
+sudo systemctl restart ssh

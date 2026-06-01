@@ -1,0 +1,46 @@
+---CMD---
+
+dir ->  dir c:\
+cd ->  cd downloads -- cd \ (change directory/mappa választás)
+tree (meghajtó szerkezete)
+md c:\valami (mappa)
+md temp (temporary mappa)
+del (fálj törlés)
+rd (mappa törlés)
+ipconfig -> ipconfig /all
+net user(s)
+.bat (ide mennek a parancsok)
+pause
+Systeminfo
+echo (print)
+xcopy c:\ (másol) {/E üres fáljokat is}
+goto xy (menj a xy) -- :xy (az xy)
+:cucc (specifikus code hely)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------
+Total commander jó cucc
