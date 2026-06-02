@@ -1,0 +1,63 @@
+sudo nano /etc/netplan/00-installer-config.yaml
+
+
+network:
+ version: 2
+ ethernets:
+  enp0s3:
+   dhcp4: no
+   addresses:
+     - 192.168.1.20/24
+   gateway4: 192.168.1.1
+   nameservers:
+     addresses:
+       - 192.168.1.1
+
+sudo netplan apply
+
+
+ssh admin@192.168.1.20
+
+sudo apt update
+sudo apt install samba
+
+sudo mkdir /srv/samba/share
+sudo chown nobody:nogroup /srv/samba/share
+sudo chmod 777 /srv/samba/share
+
+sudo nano /etc/samba/smb.conf
+
+Görgess le a fájl végére, és add hozzá az alábbi bejegyzéseket:
+[SharedFolder]
+path = /srv/samba/share
+browsable = yes
+read only = no
+guest ok = yes
+
+sudo systemctl restart smbd
+sudo systemctl enable smbd
+
+A Windows 10 gépen nyisd meg a Fájlkezelőt, és írj be a cím mezőbe:
+\\192.168.1.20\SharedFolder
+o Ha a megosztott könyvtár megjelenik, akkor a Samba fájlmegosztás megfelelően 
+működik
+
+
+
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
+udo apt update && sudo apt upgrade -y
+
+
+telepités: sudo apt install mc
+sudo apt install apache2
+
+AMPP (XAMPP) telepítése és az Apache, ProFTPD indítása
+ cd ~/Letöltések  # Cserélje le a mappa nevét, ha másként van
+ sudo chmod +x xampp-linux-x64-<version>.run
+sudo ./xampp-linux-x64-<version>.run
+ sudo /opt/lampp/lampp start
+
+sudo chown -R ubi2:ubi2 /opt/lampp/htdocs
+ sudo chmod -R 755 /opt/lampp/htdocs
